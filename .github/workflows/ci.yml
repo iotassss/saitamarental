@@ -1,0 +1,56 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: 1.23.x
+
+    - name: Install dependencies
+      run: |
+        go mod tidy
+
+    # フォーマットの確認 (go fmt & goimports)
+    - name: Check formatting
+      run: |
+        go install golang.org/x/tools/cmd/goimports@latest
+        fmt_result=$(go fmt ./...)
+        imports_result=$(goimports -l .)
+        if [ -n "$fmt_result" ] || [ -n "$imports_result" ]; then
+          echo "Formatting issues found:"
+          echo "$fmt_result"
+          echo "$imports_result"
+          exit 1
+        fi
+
+    # 静的解析 (go vet & staticcheck)
+    - name: Run go vet
+      run: go vet ./...
+    # - name: Run staticcheck
+    #   uses: reviewdog/action-staticcheck@v1
+    #   with:
+    #     workdir: ./src
+    #     github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    # ビルドの確認
+    - name: Build
+      run: go build -v ./...
+
+    # テストの実行
+    - name: Test
+      run: go test -v ./...
