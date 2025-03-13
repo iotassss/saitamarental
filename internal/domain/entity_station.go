@@ -6,10 +6,10 @@ type Station struct {
 	toShinjuku TravelTime
 }
 
-func NewStation(id ID, toTokyo TravelTime, toShinjuku TravelTime) *Station {
+func NewStation(id ID, toTokyo TravelTime, toShinjuku TravelTime) (*Station, error) {
 	return &Station{
 		id:         id,
 		toTokyo:    toTokyo,
 		toShinjuku: toShinjuku,
-	}
+	}, nil
 }
