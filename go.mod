@@ -1,4 +1,4 @@
-module github.com/iotassss/saitamarent
+module github.com/iotassss/saitamarental
 
 go 1.23.7
 

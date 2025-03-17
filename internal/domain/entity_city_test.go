@@ -3,7 +3,7 @@ package domain_test
 import (
 	"testing"
 
-	"github.com/iotassss/saitamarent/internal/domain"
+	"github.com/iotassss/saitamarental/internal/domain"
 )
 
 func TestNewCity(t *testing.T) {

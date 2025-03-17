@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/iotassss/saitamarent/internal/hello"
+	"github.com/iotassss/saitamarental/internal/hello"
 
 	"github.com/gin-gonic/gin"
 )
