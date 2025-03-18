@@ -36,13 +36,32 @@ func main() {
 		slog.Error("Missing required environment variables", slog.Any("error", "APP_PORT"))
 		return
 	}
-	dbDSN := os.Getenv("DB_DSN")
-	if dbDSN == "" {
-		slog.Error("Missing required environment variables", slog.Any("error", "DB_DSN"))
+	mysqlDatabase := os.Getenv("MYSQL_DATABASE")
+	if mysqlDatabase == "" {
+		slog.Error("Missing required environment variables", slog.Any("error", "MYSQL_DATABASE"))
+		return
+	}
+	mysqlUser := os.Getenv("MYSQL_USER")
+	if mysqlUser == "" {
+		slog.Error("Missing required environment variables", slog.Any("error", "MYSQL_USER"))
+		return
+	}
+	mysqlPassword := os.Getenv("MYSQL_PASSWORD")
+	if mysqlPassword == "" {
+		slog.Error("Missing required environment variables", slog.Any("error", "MYSQL_PASSWORD"))
+		return
+	}
+	dblHost := os.Getenv("DB_HOST")
+	if dblHost == "" {
+		slog.Error("Missing required environment variables", slog.Any("error", "DB_HOST"))
 		return
 	}
 
 	// database
+	dbDSN := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", mysqlUser, mysqlPassword, dblHost, mysqlDatabase)
+	if env == "development" {
+		slog.Info("connecting to database", slog.Any("dsn", dbDSN))
+	}
 	db, err := gorm.Open(mysql.Open(dbDSN), &gorm.Config{})
 	err = db.AutoMigrate(
 	// &repository.User{},
