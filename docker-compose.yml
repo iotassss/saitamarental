@@ -12,7 +12,8 @@ services:
       - "2345:2345"
     command: ["air"]
     depends_on:
-      - db
+      db:
+        condition: service_healthy  # db の healthcheck 成功後に起動
     env_file:
       - .env
 
@@ -27,6 +28,11 @@ services:
       # - ./mysql_data:/var/lib/mysql # プロジェクトディレクトリの mysql_data/ フォルダに保存
     env_file:
       - .env
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   mysql_data:
