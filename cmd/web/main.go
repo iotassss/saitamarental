@@ -59,7 +59,9 @@ func main() {
 
 	// database
 	dbDSN := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", mysqlUser, mysqlPassword, dblHost, mysqlDatabase)
-	slog.Info("connecting to database", slog.Any("dsn", dbDSN))
+	if env == "development" {
+		slog.Info("connecting to database", slog.Any("dsn", dbDSN))
+	}
 	db, err := gorm.Open(mysql.Open(dbDSN), &gorm.Config{})
 	err = db.AutoMigrate(
 	// &repository.User{},
