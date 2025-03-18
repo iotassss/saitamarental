@@ -10,6 +10,23 @@ services:
     ports:
       - "8080:8080"
       - "2345:2345"
-    environment:
-      - ENV=development
     command: ["air"]
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql # Docker の内部ボリューム（docker volume ls で確認可能）
+      # - ./mysql_data:/var/lib/mysql # プロジェクトディレクトリの mysql_data/ フォルダに保存
+    env_file:
+      - .env
+
+volumes:
+  mysql_data:

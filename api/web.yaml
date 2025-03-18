@@ -1,0 +1,102 @@
+openapi: 3.0.3
+info:
+  title: Tokyo vs Saitama Rent Comparison API
+  version: 1.0.0
+paths:
+  /chintai/souba/hikaku/tokyo-vs-saitama:
+    get:
+      summary: 東京を基準に埼玉の賃貸価格比較
+      description: 指定した東京都の自治体と同じ平均家賃で、より広いまたはより都心に近い物件が見つかる埼玉のエリアを検索します。
+      parameters:
+        - name: base_location
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "Shinjuku"
+          description: "東京都内の基準となる自治体（例: 新宿区、八王子市）"
+        - name: criteria
+          in: query
+          required: true
+          schema:
+            type: string
+            # enum: [larger, closer_to_Shinjuku, closer_to_Tokyo, larger_closer_to_Shinjuku, larger_closer_to_Tokyo] # phase2
+            enum: [larger]
+          # example: "larger_closer_to_Shinjuku" # phase2
+          example: "larger"
+          description: "比較の基準となる条件。"
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+          example: 5
+          description: "取得する結果の最大数。"
+      responses:
+        "200":
+          description: 埼玉でおすすめのエリアを返します。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tokyo_city:
+                    $ref: "#/components/schemas/City"
+                  saitama_cities:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: "#/components/schemas/City"
+                        - type: object
+                          properties:
+                            comment:
+                              type: string
+                              example: "より広い間取り。"
+                              description: "基準となる東京都の自治体との比較情報。"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+components:
+  schemas:
+    City:
+      type: object
+      properties:
+        city:
+          type: string
+          example: "新宿区"
+          description: "自治体名。"
+        layout:
+          type: string
+          example: "2LDK"
+          description: "間取り"
+        average_rent:
+          type: number
+          format: float
+          example: 7.5
+          description: "間取りに対する平均家賃"
+
+  responses:
+    BadRequest:
+      description: 不正なパラメータによるリクエストエラー
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Invalid criteria parameter"
+
+    InternalServerError:
+      description: サーバー内部エラー
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Internal server error"
