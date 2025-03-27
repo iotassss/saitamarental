@@ -32,6 +32,18 @@ func NewAverageRentAmount(amount string) (AverageRentAmount, error) {
 func (r AverageRentAmount) String() string  { return r.amount }
 func (r AverageRentAmount) Number() float64 { return r.floatAmount }
 
+func (r AverageRentAmount) Equals(target AverageRentAmount) bool {
+	return r.floatAmount == target.floatAmount
+}
+
+func (r AverageRentAmount) IsLargerThan(target AverageRentAmount) bool {
+	return r.floatAmount > target.floatAmount
+}
+
+func (r AverageRentAmount) IsSmallerThan(target AverageRentAmount) bool {
+	return r.floatAmount < target.floatAmount
+}
+
 func (r AverageRentAmount) Get10PercentUpper() (AverageRentAmount, error) {
 	hundredTenPercent := math.Round(r.floatAmount*1.1*10) / 10
 	return NewAverageRentAmount(fmt.Sprintf("%.1f", hundredTenPercent))

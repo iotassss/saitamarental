@@ -24,9 +24,11 @@ func (r *AverageRent) Layout() Layout            { return r.layout }
 func (r *AverageRent) Get10PercentUpper() (AverageRentAmount, error) {
 	return r.amount.Get10PercentUpper()
 }
+
 func (r *AverageRent) Get10PercentLower() (AverageRentAmount, error) {
 	return r.amount.Get10PercentLower()
 }
+
 func (r *AverageRent) IsLargerLayoutThan(targetAverageRent *AverageRent) bool {
 	return r.layout.IsLargerThan(targetAverageRent.Layout())
 }

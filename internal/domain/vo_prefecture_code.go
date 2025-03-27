@@ -35,3 +35,7 @@ func NewPrefectureCode(code string) (PrefectureCode, error) {
 func (p PrefectureCode) String() string {
 	return string(p)
 }
+
+func (p PrefectureCode) Equals(other PrefectureCode) bool {
+	return p.String() == other.String()
+}

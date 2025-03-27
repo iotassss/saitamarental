@@ -11,6 +11,8 @@ type CityCode struct {
 	checkDigit       int
 }
 
+func (c CityCode) PrefectureCode() PrefectureCode { return c.prefectureCode }
+
 func ParseCityCode(code string) (CityCode, error) {
 	if len(code) != 5 && len(code) != 6 {
 		return CityCode{}, fmt.Errorf("code must be 5 or 6 digits")
@@ -84,4 +86,8 @@ func calculateCheckDigit(code string) (int, error) {
 
 func (c CityCode) String() string {
 	return c.prefectureCode.String() + c.municipalityCode + strconv.Itoa(c.checkDigit)
+}
+
+func (c CityCode) Equals(other CityCode) bool {
+	return c.String() == other.String()
 }

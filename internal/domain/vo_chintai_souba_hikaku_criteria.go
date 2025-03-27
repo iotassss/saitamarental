@@ -4,6 +4,14 @@ import "fmt"
 
 type ChintaiSoubaHikakuCriteria string
 
+const (
+	CriteriaLarger                 ChintaiSoubaHikakuCriteria = "larger"
+	CriteriaCloserToShinjuku       ChintaiSoubaHikakuCriteria = "closer_to_shinjuku"
+	CriteriaCloserToTokyo          ChintaiSoubaHikakuCriteria = "closer_to_tokyo"
+	CriteriaLargerCloserToShinjuku ChintaiSoubaHikakuCriteria = "larger_closer_to_shinjuku"
+	CriteriaLargerCloserToTokyo    ChintaiSoubaHikakuCriteria = "larger_closer_to_tokyo"
+)
+
 func NewChintaiSoubaHikakuCriteria(criteria string) (ChintaiSoubaHikakuCriteria, error) {
 	switch criteria {
 	case "larger":
