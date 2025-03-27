@@ -18,3 +18,7 @@ func NewCityOrder(order int) (CityOrder, error) {
 func (c CityOrder) Value() int {
 	return int(c)
 }
+
+func (c CityOrder) ComesBefore(order CityOrder) bool {
+	return c.Value() < order.Value()
+}

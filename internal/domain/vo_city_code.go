@@ -6,24 +6,35 @@ import (
 )
 
 type CityCode struct {
-	prefectureCode   string
+	prefectureCode   PrefectureCode
 	municipalityCode string
 	checkDigit       int
 }
 
-func NewCityCode(prefectureCode string, municipalityCode string) (CityCode, error) {
-	// prefectureCode
-	if len(prefectureCode) != 2 {
-		return CityCode{}, fmt.Errorf("prefectureCode must be 2 digits")
-	}
-	intPrefectureCode, err := strconv.Atoi(prefectureCode)
-	if err != nil {
-		return CityCode{}, fmt.Errorf("prefectureCode must be number")
-	}
-	if intPrefectureCode < 1 || intPrefectureCode > 47 {
-		return CityCode{}, fmt.Errorf("prefectureCode must be 1~47")
+func (c CityCode) PrefectureCode() PrefectureCode { return c.prefectureCode }
+
+func ParseCityCode(code string) (CityCode, error) {
+	if len(code) != 5 && len(code) != 6 {
+		return CityCode{}, fmt.Errorf("code must be 5 or 6 digits")
 	}
 
+	prefectureCodeStr := code[:2] // 01-47
+	municipalityCode := code[2:5] // 001-999
+
+	prefectureCode, err := NewPrefectureCode(prefectureCodeStr)
+	if err != nil {
+		return CityCode{}, err
+	}
+
+	cityCode, err := NewCityCode(prefectureCode, municipalityCode)
+	if err != nil {
+		return CityCode{}, err
+	}
+
+	return cityCode, nil
+}
+
+func NewCityCode(prefectureCode PrefectureCode, municipalityCode string) (CityCode, error) {
 	// municipalityCode
 	if len(municipalityCode) != 3 {
 		return CityCode{}, fmt.Errorf("municipalityCode must be 3 digits")
@@ -33,7 +44,7 @@ func NewCityCode(prefectureCode string, municipalityCode string) (CityCode, erro
 	}
 
 	// Calculate check digit
-	fullCode := prefectureCode + municipalityCode
+	fullCode := prefectureCode.String() + municipalityCode
 	checkDigit, err := calculateCheckDigit(fullCode)
 	if err != nil {
 		return CityCode{}, err
@@ -71,4 +82,12 @@ func calculateCheckDigit(code string) (int, error) {
 	}
 
 	return checkDigit, nil
+}
+
+func (c CityCode) String() string {
+	return c.prefectureCode.String() + c.municipalityCode + strconv.Itoa(c.checkDigit)
+}
+
+func (c CityCode) Equals(other CityCode) bool {
+	return c.String() == other.String()
 }

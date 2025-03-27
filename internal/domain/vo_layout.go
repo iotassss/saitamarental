@@ -10,6 +10,7 @@ const (
 	Layout3LDK4K  = "3LDK/4K~"
 )
 
+// 上ほど狭く、下ほど広い
 var layouts = []string{
 	LayoutOneRoom,
 	Layout1K1DK,
@@ -39,6 +40,18 @@ func NewLayout(layout string) (Layout, error) {
 	return Layout(layout), nil
 }
 
-func (l Layout) Value() string {
+func (l Layout) String() string {
 	return string(l)
+}
+
+func (l Layout) IsLargerThan(targetLayout Layout) bool {
+	getIndex := func(layout Layout) int {
+		for i, val := range layouts {
+			if val == string(layout) {
+				return i
+			}
+		}
+		return -1
+	}
+	return getIndex(l) > getIndex(targetLayout)
 }

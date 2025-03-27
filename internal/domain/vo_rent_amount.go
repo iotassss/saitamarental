@@ -2,36 +2,54 @@ package domain
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 )
 
-type RentAmount struct {
+type AverageRentAmount struct {
 	amount      string
 	floatAmount float64
 }
 
-func NewRentAmount(amount string) (RentAmount, error) {
+func NewAverageRentAmount(amount string) (AverageRentAmount, error) {
 	if amount == "" {
-		return RentAmount{}, fmt.Errorf("rent amount cannot be empty")
+		return AverageRentAmount{}, fmt.Errorf("rent amount cannot be empty")
 	}
 	floatAmount, err := strconv.ParseFloat(amount, 64)
 	if err != nil {
-		return RentAmount{}, fmt.Errorf("rent amount must be a number")
+		return AverageRentAmount{}, fmt.Errorf("rent amount must be a number")
 	}
 	if floatAmount*10 != float64(int(floatAmount*10)) {
-		return RentAmount{}, fmt.Errorf("rent amount must have one decimal place")
+		return AverageRentAmount{}, fmt.Errorf("rent amount must have one decimal place")
 	}
 
-	return RentAmount{
+	return AverageRentAmount{
 		amount:      amount,
 		floatAmount: floatAmount,
 	}, nil
 }
 
-func (r RentAmount) String() string {
-	return r.amount
+func (r AverageRentAmount) String() string  { return r.amount }
+func (r AverageRentAmount) Number() float64 { return r.floatAmount }
+
+func (r AverageRentAmount) Equals(target AverageRentAmount) bool {
+	return r.floatAmount == target.floatAmount
 }
 
-func (r RentAmount) Number() float64 {
-	return r.floatAmount
+func (r AverageRentAmount) IsLargerThan(target AverageRentAmount) bool {
+	return r.floatAmount > target.floatAmount
+}
+
+func (r AverageRentAmount) IsSmallerThan(target AverageRentAmount) bool {
+	return r.floatAmount < target.floatAmount
+}
+
+func (r AverageRentAmount) Get10PercentUpper() (AverageRentAmount, error) {
+	hundredTenPercent := math.Round(r.floatAmount*1.1*10) / 10
+	return NewAverageRentAmount(fmt.Sprintf("%.1f", hundredTenPercent))
+}
+
+func (r AverageRentAmount) Get10PercentLower() (AverageRentAmount, error) {
+	ninetyPercent := math.Round(r.floatAmount*0.9*10) / 10
+	return NewAverageRentAmount(fmt.Sprintf("%.1f", ninetyPercent))
 }
