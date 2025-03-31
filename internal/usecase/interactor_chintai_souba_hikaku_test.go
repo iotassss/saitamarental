@@ -32,7 +32,7 @@ func TestExecute_Valid(t *testing.T) {
 	city1 := unittest.Must(domain.NewCity(
 		unittest.Must(domain.NewID(1)),
 		unittest.Must(domain.NewCityName("さいたま市大宮区")),
-		unittest.Must(domain.ParseCityCode("111031")),
+		unittest.Must(domain.ParseCityCode("11103")),
 		unittest.Must(domain.NewCityOrder(1)),
 	))
 	averageRent1 := unittest.Must(domain.NewAverageRent(
@@ -50,7 +50,7 @@ func TestExecute_Valid(t *testing.T) {
 	city2 := unittest.Must(domain.NewCity(
 		unittest.Must(domain.NewID(2)),
 		unittest.Must(domain.NewCityName("川口市")),
-		unittest.Must(domain.ParseCityCode("112038")),
+		unittest.Must(domain.ParseCityCode("11203")),
 		unittest.Must(domain.NewCityOrder(2)),
 	))
 	averageRent3 := unittest.Must(domain.NewAverageRent(
@@ -103,7 +103,7 @@ func (p *presenter) Present(outputData usecase.ChintaiSoubaHikakuOutputData) err
 	if outputData.BaseTokyoCity.AverageRent != "12.3" {
 		return fmt.Errorf("unexpected BaseTokyoCity.AverageRent: %s", outputData.BaseTokyoCity.AverageRent)
 	}
-	if outputData.BaseTokyoCity.CityCode != "131016" {
+	if outputData.BaseTokyoCity.CityCode != "13101" {
 		return fmt.Errorf("unexpected BaseTokyoCity.CityCode: %s", outputData.BaseTokyoCity.CityCode)
 	}
 
@@ -119,7 +119,7 @@ func (p *presenter) Present(outputData usecase.ChintaiSoubaHikakuOutputData) err
 	if outputData.SaitamaCities[0].AverageRent != "12.3" {
 		return fmt.Errorf("unexpected SaitamaCities[0].AverageRent: %s", outputData.SaitamaCities[0].AverageRent)
 	}
-	if outputData.SaitamaCities[0].CityCode != "111031" {
+	if outputData.SaitamaCities[0].CityCode != "11103" {
 		return fmt.Errorf("unexpected SaitamaCities[0].CityCode: %s", outputData.SaitamaCities[0].CityCode)
 	}
 
