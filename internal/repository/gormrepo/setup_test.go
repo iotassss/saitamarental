@@ -25,7 +25,6 @@ func setupTestDB(t *testing.T) *gorm.DB {
 		mustGetEnv("DB_PORT"),
 		dbName,
 	)
-	t.Logf("Connecting to test DB: %s", dsn)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
@@ -39,7 +38,6 @@ func setupTestDB(t *testing.T) *gorm.DB {
 			mustGetEnv("DB_PORT"),
 			dbName,
 		)
-		t.Logf("Connecting to test DB: %s", dsn)
 		db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 			Logger: logger.Default.LogMode(logger.Info),
 		})
