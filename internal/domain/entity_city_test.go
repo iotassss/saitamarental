@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/iotassss/saitamarental/internal/domain"
+	"github.com/iotassss/saitamarental/internal/unittest"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -37,4 +38,18 @@ func TestCity_ComesBefore(t *testing.T) {
 	assert.True(t, city1.ComesBefore(city2))
 	assert.False(t, city2.ComesBefore(city1))
 	assert.False(t, city1.ComesBefore(city1))
+}
+
+func TestCity_SetID(t *testing.T) {
+	id := unittest.Must(domain.NewID(0))
+	newID := unittest.Must(domain.NewID(100))
+	name := unittest.Must(domain.NewCityName("さいたま市"))
+	code := unittest.Must(domain.NewCityCode("11", "001"))
+	order := unittest.Must(domain.NewCityOrder(1))
+
+	city := unittest.Must(domain.NewCity(id, name, code, order))
+
+	err := city.SetID(newID)
+	assert.NoError(t, err)
+	assert.Equal(t, newID, city.ID())
 }

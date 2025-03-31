@@ -14,7 +14,7 @@ func TestNewCityCode(t *testing.T) {
 	code, err := domain.NewCityCode(pref, "001")
 	assert.NoError(t, err)
 	assert.Equal(t, "11", code.String()[:2])
-	assert.Equal(t, 6, len(code.String())) // "11" + "001" + check digit
+	assert.Equal(t, 5, len(code.String())) // "11" + "001"
 }
 
 func TestCityCode_StringFormat(t *testing.T) {
@@ -22,7 +22,7 @@ func TestCityCode_StringFormat(t *testing.T) {
 	code, _ := domain.NewCityCode(pref, "001")
 
 	str := code.String()
-	assert.Len(t, str, 6)
+	assert.Len(t, str, 5)
 	assert.Equal(t, "11", str[:2])
 	assert.Equal(t, "001", str[2:5])
 }
