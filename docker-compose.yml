@@ -25,6 +25,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql # Docker の内部ボリューム（docker volume ls で確認可能）
       # - ./mysql_data:/var/lib/mysql # プロジェクトディレクトリの mysql_data/ フォルダに保存
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     env_file:
       - .env
     healthcheck:

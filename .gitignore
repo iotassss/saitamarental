@@ -4,3 +4,4 @@ tmp/
 .env.development
 .env.production
 log
+memo.md

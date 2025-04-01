@@ -85,7 +85,7 @@ func calculateCheckDigit(code string) (int, error) {
 }
 
 func (c CityCode) String() string {
-	return c.prefectureCode.String() + c.municipalityCode + strconv.Itoa(c.checkDigit)
+	return c.prefectureCode.String() + c.municipalityCode
 }
 
 func (c CityCode) Equals(other CityCode) bool {
