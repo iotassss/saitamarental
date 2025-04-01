@@ -45,7 +45,11 @@ func setupTestDB(t *testing.T) *gorm.DB {
 
 	require.NoError(t, err)
 	require.NoError(t, db.Exec("DROP TABLE IF EXISTS cities").Error)
-	require.NoError(t, db.AutoMigrate(&gormrepo.CityModel{}))
+	require.NoError(t, db.Exec("DROP TABLE IF EXISTS average_rents").Error)
+	require.NoError(t, db.AutoMigrate(
+		&gormrepo.CityModel{},
+		&gormrepo.AverageRentModel{},
+	))
 	return db
 }
 
