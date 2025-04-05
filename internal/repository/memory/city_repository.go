@@ -67,6 +67,17 @@ func (r *InMemoryCityRepo) FindByPrefectureCode(code domain.PrefectureCode) (map
 	return result, nil
 }
 
+func (r *InMemoryCityRepo) FindAll() ([]*domain.City, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	cities := make([]*domain.City, 0, len(r.data))
+	for _, city := range r.data {
+		cities = append(cities, city)
+	}
+	return cities, nil
+}
+
 func (r *InMemoryCityRepo) Save(city *domain.City) (*domain.City, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()

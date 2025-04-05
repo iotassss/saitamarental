@@ -5,3 +5,4 @@ tmp/
 .env.production
 log
 memo.md
+data/
