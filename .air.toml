@@ -8,10 +8,15 @@ tmp_dir = "tmp"
 
 [build]
   # `go build` の対象を `cmd/hello` に変更
-  cmd = "go build -o tmp/main ./cmd/api"
+  # cmd = "go build -o tmp/main ./cmd/api"
+  # GO　1.10以降ではgcflags="all=-N -l"を使う
+  cmd = "go build -gcflags \"all=-N -l\" -o tmp/main ./cmd/api"
   bin = "tmp/main"
   delay = 1000
   stop_on_error = true
+  # docker-compose.ymlで指定した2345ポートをlistenする必要がある
+  full_bin = "dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient exec ./tmp/main"
+
 
 [watcher]
   # 監視するファイルの指定

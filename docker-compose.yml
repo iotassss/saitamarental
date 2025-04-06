@@ -10,7 +10,7 @@ services:
     ports:
       - "8080:8080"
       - "2345:2345"
-    command: ["air"]
+    command: ["air", "-c", ".air.toml"]
     depends_on:
       db:
         condition: service_healthy  # db の healthcheck 成功後に起動
